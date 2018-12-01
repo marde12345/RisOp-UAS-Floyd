@@ -1,3 +1,8 @@
+
+
+
+
+
 def Floyd(graph,next):
     length = len(graph)
 
@@ -45,16 +50,18 @@ def NextPath(graph):
 
 if __name__ == '__main__':
     ini = float('inf')
-    graph_list = [
-        [0,5,ini,10],
-        [ini,0,3,ini],
-        [ini,ini,0,1],
-        [ini,ini,ini,0]
-    ]
+    graph_list = [[ 0 , 1 , 5 , 7 , 9 ,ini],
+    [ 1 , 0 , 6 , 7 , 3 ,ini],
+    [ 5 , 6 , 0 , 9 ,ini, 8 ],
+    [ 7 , 7 , 9 , 0 , 8 , 3 ],
+    [ 9 , 3 ,ini, 8 , 0 ,ini],
+    [ini,ini, 8 , 3 ,ini, 0 ]]
     path = NextPath(graph_list)  
 
   
     new_graph, new_path = Floyd(graph_list,path)
-    ab=(Path(new_path,1,3))
-    print(ab)
-    
+    xy = Path(new_path,4,5)
+    # print(xy)
+    print(xy[0]+1)
+    print(xy[1]+1)
+    print(xy[2]+1)
