@@ -1,70 +1,60 @@
-def floyd(graph):
+def Floyd(graph,next):
     length = len(graph)
-    path = {}
 
     for i in range(length):
-        path.setdefault(i, {})
         for j in range(length):
-            if i == j:
-                continue
-
-            path[i].setdefault(j, [i,j])
-            new_node = None
 
             for k in range(length):
-                if k == j:
-                    continue
 
                 new_len = graph[i][k] + graph[k][j]
                 if graph[i][j] > new_len:
-                    graph[i][j] = new_len
-                    new_node = k
-            if new_node:
-                path[i][j].insert(-1, new_node)
+                	graph[i][j] = new_len
+                	next[i][j] = next[i][k]
 
-    return graph, path
+    return graph, next
 
-def floyd_dict(graph):
-    length = len(graph)
-    path = {}
+def Path(next,s,d):
+	path = []
 
-    for src in graph:
-        path.setdefault(src, {})
-        for dst in graph[src]:
-            if src == dst:
-                continue
-            path[src].setdefault(dst, [src,dst])
-            new_node = None
+	if next[s][d] == float('inf') :
+		print('Tidak ada jalan kesana')
+		return path
+	elif next[s][d] == 0 :
+		print('Tidak terdefinisi')
+		return path
+	else :
+		path.append(s)
+		while s != d:
+			s = next[s][d]
+			path.append(s)
 
-            for mid in graph:
-                if mid == dst:
-                    continue
+	return path
 
-                new_len = graph[src][mid] + graph[mid][dst]
-                if graph[src][dst] > new_len:
-                    graph[src][dst] = new_len
-                    new_node = mid
-            if new_node:
-                path[src][dst].insert(-1, new_node)
-
-    return graph, path
+def NextPath(graph):
+    path = []
+    for a in graph:
+        temp = []
+        for b in a:
+            if b != 0 and b != float('inf') :
+                temp.append(a.index(b))
+            else :
+                temp.append(b)
+        path.append(temp)
+    return path
 
 
 if __name__ == '__main__':
     ini = float('inf')
-    graph_list = [   [0, 2, 1, 4, 5, 1],
-            [1, 0, 4, 2, 3, 4],
-            [2, 1, 0, 1, 2, 4],
-            [3, 5, 2, 0, 3, 3],
-            [2, 4, 3, 4, 0, 1],
-            [3, 4, 7, 3, 1, 0]]
+    graph_list = [
+        [0,5,ini,10],
+        [ini,0,3,ini],
+        [ini,ini,0,1],
+        [ini,ini,ini,0]
+    ]
+    path = NextPath(graph_list)  
 
-    graph_dict = {  "s1":{"s1": 0, "s2": 2, "s10": 1, "s12": 4},
-                    "s2":{"s1": 1, "s2": 0, "s10": 4, "s12": 2},
-                    "s10":{"s1": 2, "s2": 1, "s10": 0, "s12":1},
-                    "s12":{"s1": 3, "s2": 5, "s10": 2, "s12":0},
-    }
-
-    #new_graph, path= floyd_dict(graph_dict)    
-    new_graph, path = floyd(graph_list)
-    print (new_graph, '\n\n\n', path[0],'\n',path[1])
+  
+    new_graph, new_path = Floyd(graph_list,path)
+    ab=(Path(new_path,1,3))
+    print(ab)
+    
